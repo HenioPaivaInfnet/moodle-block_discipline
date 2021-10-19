@@ -1,0 +1,35 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    Template que ira renderizar
+    
+}}
+<div class="d-flex">
+    <div class="align-self-stretch d-flex flex-column w-100">
+    {{#disciplinas}}
+        <div class="text-muted muted d-flex flex-wrap font-size-13 mb-1">
+            <span class="categoryname">{{bloco}} | {{turma}}</span>
+        </div>
+        <div class="d-flex mb-1">
+            <a class="aalink coursename font-weight-600" href="course/view.php?id={{courseid}}">
+                <h6 class="d-inline h5">{{fullname}} | {{papel}}</h6> 
+            </a>
+        </div>
+    <hr>
+    {{/disciplinas}}
+    </div>  
+</div>

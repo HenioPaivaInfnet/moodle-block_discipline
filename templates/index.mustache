@@ -1,0 +1,88 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    Template que ira renderizar
+    
+}}
+
+<!-- Botão seletor de modo de visualização -->
+<!-- nav-grouping-selector -->
+<div class="dropdown mb-1 mr-auto">
+    <button id="groupingdropdown_" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+        <span class="d-sm-inline-block" data-active-item-text>
+            {{#str}} onprogress, block_discipline {{/str}}
+        </span>
+    </button>
+    <ul class="dropdown-menu" role="menu" data-show-active-item data-skip-active-class="true" data-active-item-text aria-labelledby="groupingdropdown_">
+        <li>
+            <a id="btnTodos" class="dropdown-item" href="#" data-value="1" role="menuitem">
+                {{#str}} allcourses, block_discipline {{/str}}
+            </a>
+        </li>
+        <li>
+            <a id="btnEmAndamento" class="dropdown-item" href="#"  data-value="2" role="menuitem">
+                {{#str}} onprogress, block_discipline {{/str}}
+            </a>
+        </li>
+        <li>
+            <a id="btnNaoIniciados" class="dropdown-item" href="#"  data-value="3" role="menuitem">
+                {{#str}} notstarted, block_discipline {{/str}}
+            </a>
+        </li>
+        <li>
+            <a id="btnEncerrados" class="dropdown-item" href="#"  data-value="4" role="menuitem">
+                {{#str}} concluded, block_discipline {{/str}}
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="mb-1 mr-auto">
+    <span class="filler">&nbsp;</span>
+</div>
+<!-- Fim do botão seletor de modo de visualização -->
+
+
+
+<!-- Lista de cursos -->
+<div id="lista-cursos">
+    
+</div>
+<!-- Fim da lista de cursos -->
+
+{{#js}}
+require(['block_discipline/main'], function(main) {
+    main.init();
+    let btnTodos = document.querySelector('#btnTodos');
+        btnTodos.addEventListener('click', disparaEvento);
+
+    let btnEmAndamento = document.querySelector('#btnEmAndamento');
+        btnEmAndamento.addEventListener('click', disparaEvento);
+
+    let btnNaoIniciados = document.querySelector('#btnNaoIniciados');
+        btnNaoIniciados.addEventListener('click', disparaEvento);
+
+    let btnEncerrados = document.querySelector('#btnEncerrados');
+        btnEncerrados.addEventListener('click', disparaEvento);
+
+    function disparaEvento(){
+        let value = this.dataset.value;
+        main.init(value);
+    }
+});
+
+{{/js}}
