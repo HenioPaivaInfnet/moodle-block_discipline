@@ -30,15 +30,17 @@ class courses {
     public $timeforsql;
 
     public function get_enrolled_courses($datavalue = 2) {
-        global $DB, $USER;
+        global $DB, $USER, $CFG;
+
+        $links = $CFG->wwwroot . '/course/view.php?id=';
 
         $timenow = time();
 
         switch($datavalue){
-            case 1: 
+            case 1:
                 $this->timeforsql = "ORDER BY disciplina.startdate, disciplina.shortname;";
                 break;
-            case 2: 
+            case 2:
                 $this->timeforsql = "AND disciplina.enddate > :timenow ORDER BY disciplina.startdate DESC, disciplina.shortname;";
                 break;
             case 3:
@@ -48,15 +50,16 @@ class courses {
                 $this->timeforsql = "AND disciplina.enddate < :timenow ORDER BY disciplina.startdate DESC, disciplina.shortname;";
                 break;
         }
-        
 
         $params = [
             'userid' => $USER->id,
-            'timenow' => $timenow
+            'timenow' => $timenow,
+            'links' => $links
         ];
 
         $sql = "SELECT disciplina.id courseid, disciplina.fullname fullname,
-        bloco.name bloco, turma.name turma, papel.name papel
+        bloco.name bloco, turma.name turma, papel.name papel,
+        CONCAT(:links, disciplina.id) links
         FROM {user} usuario
         JOIN {role_assignments} ra ON usuario.id = ra.userid
         JOIN {context} cxt ON ra.contextid = cxt.id

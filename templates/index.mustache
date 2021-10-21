@@ -65,7 +65,7 @@
 <!-- Fim da lista de cursos -->
 
 {{#js}}
-require(['block_discipline/main'], function(main) {
+require(['block_discipline/main', 'block_discipline/page'], function(main, page) {
     main.init();
     let btnTodos = document.querySelector('#btnTodos');
         btnTodos.addEventListener('click', disparaEvento);
@@ -82,6 +82,7 @@ require(['block_discipline/main'], function(main) {
     function disparaEvento(){
         let value = this.dataset.value;
         main.init(value);
+        page.init();
     }
 });
 

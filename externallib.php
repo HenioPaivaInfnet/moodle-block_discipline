@@ -34,8 +34,7 @@ class block_discipline_external extends external_api
      * Parametros requiridos pela api para executar função
      * @return external_funciotion_parameters
      */
-    public static function get_enrolled_courses_parameters()
-    {
+    public static function get_enrolled_courses_parameters() {
         return new external_function_parameters(
             array(
                 'datavalue' => new external_value(PARAM_INT, 'datavalue', VALUE_DEFAULT, 2)
@@ -61,7 +60,8 @@ class block_discipline_external extends external_api
                         'fullname' => new external_value(PARAM_TEXT, 'fullname'),
                         'bloco' => new external_value(PARAM_TEXT, 'bloco'),
                         'turma' => new external_value(PARAM_TEXT, 'turma'),
-                        'papel' => new external_value(PARAM_TEXT, 'papel')
+                        'papel' => new external_value(PARAM_TEXT, 'papel'),
+                        'links' => new external_value(PARAM_TEXT, 'links'),
                     )
                 )
             );
