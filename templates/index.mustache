@@ -27,7 +27,7 @@
             {{#str}} onprogress, block_discipline {{/str}}
         </span>
     </button>
-    <ul class="dropdown-menu" role="menu" data-show-active-item data-skip-active-class="true" data-active-item-text aria-labelledby="groupingdropdown_">
+    <ul class="dropdown-menu" role="menu" data-actual-value="" data-skip-active-class="true" data-show-active-item data-active-item-text aria-labelledby="groupingdropdown_">
         <li>
             <a id="btnTodos" class="dropdown-item" href="#" data-value="1" role="menuitem">
                 {{#str}} allcourses, block_discipline {{/str}}
@@ -64,25 +64,87 @@
 </div>
 <!-- Fim da lista de cursos -->
 
+<ul id="pagina" class="pagination mb-0" data-length="" data-page-current="0">
+    <li class="page-item" data-region="page-item" data-control="previous">
+        <a id="pgDown" href="#" class="page-link" data-region="page-link" aria-label="Página anterior">
+            <span class="icon-no-margin dir-rtl-hide" aria-hidden="true">
+                <i class="icon fa fa-chevron-left fa-fw " aria-hidden="true"></i>
+            </span>
+            <span class="icon-no-margin dir-ltr-hide" aria-hidden="true">
+                <i class="icon fa fa-chevron-right fa-fw " aria-hidden="true"></i>
+            </span>
+        </a>
+    </li>
+    <li class="page-item" data-region="page-item" data-control="next">
+        <a id="pgUp" href="#" class="page-link" data-region="page-link" aria-label="Próxima página">
+            <span class="icon-no-margin dir-rtl-hide" aria-hidden="true">
+                <i class="icon fa fa-chevron-right fa-fw " aria-hidden="true"></i>
+            </span>
+            <span class="icon-no-margin dir-ltr-hide" aria-hidden="true">
+                <i class="icon fa fa-chevron-left fa-fw " aria-hidden="true"></i>
+            </span>
+        </a>
+    </li>
+</ul>
+
 {{#js}}
-require(['block_discipline/main', 'block_discipline/page'], function(main, page) {
+let selectedBtn = 2;
+require(['block_discipline/main'], function(main) {
     main.init();
+
+    //Valores referentes ao número de cursos a serem exibidos por página
+    let pagina = document.querySelector('#pagina');
+
+    //Botões para exibir próxima página, ou a anterior
+    let pgDown = document.querySelector('#pgDown');
+        pgDown.addEventListener('click',function(){
+            if(pagina.dataset.pageCurrent > 0){
+                pagina.dataset.pageCurrent--;
+                disparaEvento();
+            }
+        });
+
+    let pgUp = document.querySelector('#pgUp');
+        pgUp.addEventListener('click',function(){
+            if(pagina.getAttribute('data-length') > 0){
+                pagina.dataset.pageCurrent++;
+                disparaEvento();
+            }
+        });
+
+    //Botões que selecionam o modo de exibição ======
     let btnTodos = document.querySelector('#btnTodos');
-        btnTodos.addEventListener('click', disparaEvento);
+        btnTodos.addEventListener('click', function(){
+            selectedBtn = this.dataset.value;
+            pagina.dataset.pageCurrent = 0;
+            disparaEvento();
+        });
 
     let btnEmAndamento = document.querySelector('#btnEmAndamento');
-        btnEmAndamento.addEventListener('click', disparaEvento);
+        btnEmAndamento.addEventListener('click', function(){
+            selectedBtn = this.dataset.value;
+            pagina.dataset.pageCurrent = 0;
+            disparaEvento();
+        });
 
     let btnNaoIniciados = document.querySelector('#btnNaoIniciados');
-        btnNaoIniciados.addEventListener('click', disparaEvento);
+        btnNaoIniciados.addEventListener('click', function(){
+            selectedBtn = this.dataset.value;
+            pagina.dataset.pageCurrent = 0;
+            disparaEvento();
+        });
 
     let btnEncerrados = document.querySelector('#btnEncerrados');
-        btnEncerrados.addEventListener('click', disparaEvento);
+        btnEncerrados.addEventListener('click', function(){
+            selectedBtn = this.dataset.value;
+            pagina.dataset.pageCurrent = 0;
+            disparaEvento();
+        });
 
     function disparaEvento(){
-        let value = this.dataset.value;
-        main.init(value);
-        page.init();
+        let value = selectedBtn;
+        let pg = pagina.dataset.pageCurrent;
+        main.init(value, pg);
     }
 });
 

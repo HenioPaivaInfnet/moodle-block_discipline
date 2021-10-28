@@ -1,15 +1,14 @@
 define(['core/ajax', 'core/templates', 'core/notification']
-    , function (Ajax, Templates, displayException) {
-
-        let init = function (value = 2) {
+    , function (Ajax, Templates, notification) {
+        let init = function (value = 2, currentpage) {
             var promises = Ajax.call([
-                { methodname: 'block_discipline_get_enrolled_courses', args: { datavalue: value } }
+                { methodname: 'block_discipline_get_enrolled_courses', args: { datavalue: value, currentpage: currentpage } }
             ]);
-
             promises[0].done(function (response) {
                 console.log(response);
+                page(response.length);
                 template(response);
-            }).fail(displayException);
+            }).fail(notification.exception);
         };
 
         const template = function (params) {
@@ -20,8 +19,12 @@ define(['core/ajax', 'core/templates', 'core/notification']
                 .then(({ html, js }) => {
                     Templates.replaceNodeContents('#lista-cursos', html, js);
                 })
-                .catch(displayException);
+                .catch(notification.exception);
         };
 
+        const page = function(length) {
+            let pageLenght = document.getElementById('pagina');
+            pageLenght.dataset.length = length;
+        };
         return { init, template };
     });

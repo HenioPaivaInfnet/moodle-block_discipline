@@ -29,31 +29,36 @@ class courses {
 
     public $timeforsql;
 
-    public function get_enrolled_courses($datavalue = 2) {
+    public function get_enrolled_courses($datavalue = 2, $currentpage ) {
         global $DB, $USER, $CFG;
 
         $links = $CFG->wwwroot . '/course/view.php?id=';
 
         $timenow = time();
 
+        $limit = 15;
+
+        $offset = $currentpage * $limit;
+
         switch($datavalue){
             case 1:
-                $this->timeforsql = "ORDER BY disciplina.startdate, disciplina.shortname;";
+                $this->timeforsql = "ORDER BY disciplina.startdate DESC, disciplina.shortname ";
                 break;
             case 2:
-                $this->timeforsql = "AND disciplina.enddate > :timenow ORDER BY disciplina.startdate DESC, disciplina.shortname;";
+                $this->timeforsql = "AND disciplina.startdate < :timenow AND disciplina.enddate > :timenow2 ORDER BY disciplina.startdate DESC, disciplina.shortname ";
                 break;
             case 3:
-                $this->timeforsql = "AND disciplina.startdate > :timenow ORDER BY disciplina.startdate DESC, disciplina.shortname;";
+                $this->timeforsql = "AND disciplina.startdate > :timenow ORDER BY disciplina.startdate DESC, disciplina.shortname ";
                 break;
             case 4:
-                $this->timeforsql = "AND disciplina.enddate < :timenow ORDER BY disciplina.startdate DESC, disciplina.shortname;";
+                $this->timeforsql = "AND disciplina.enddate < :timenow ORDER BY disciplina.startdate DESC, disciplina.shortname ";
                 break;
         }
 
         $params = [
             'userid' => $USER->id,
             'timenow' => $timenow,
+            'timenow2' => $timenow,
             'links' => $links
         ];
 
@@ -69,7 +74,7 @@ class courses {
         JOIN {role} papel ON ra.roleid = papel.id
         WHERE cxt.contextlevel = 50 AND usuario.id = :userid " . $this->timeforsql;
 
-        $result = $DB->get_records_sql($sql, $params);
+        $result = $DB->get_records_sql($sql, $params, $offset, $limit);
 
         return $result;
     }

@@ -37,17 +37,18 @@ class block_discipline_external extends external_api
     public static function get_enrolled_courses_parameters() {
         return new external_function_parameters(
             array(
-                'datavalue' => new external_value(PARAM_INT, 'datavalue', VALUE_DEFAULT, 2)
+                'datavalue' => new external_value(PARAM_INT, 'datavalue', VALUE_DEFAULT, 2),
+                'currentpage' => new external_value(PARAM_INT, 'currentpage', VALUE_DEFAULT, 0)
             )
         );
     }
 
-    public static function get_enrolled_courses($datavalue) {
+    public static function get_enrolled_courses($datavalue, $currentpage) {
         //$datavalue = self::validate_parameters(PARAM_INT, self::get_enrolled_courses_parameters, array('datavalue'=>$datavalue));
 
         $courses = new courses();
 
-        $enrolled = $courses->get_enrolled_courses($datavalue);
+        $enrolled = $courses->get_enrolled_courses($datavalue, $currentpage);
 
         return $enrolled;
     }
